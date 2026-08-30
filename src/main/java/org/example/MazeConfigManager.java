@@ -4,6 +4,8 @@ import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import org.json.JSONObject;
 
+import java.awt.*;
+
 public class MazeConfigManager {
     private String wallCellColor;
     private String pathCellColor;
@@ -43,5 +45,20 @@ public class MazeConfigManager {
         }
     }
 
+    public Color getWallCellColorAsColor() { // Cast the String code of the wall cell to Color Object
+        return Color.decode(wallCellColor);
+    }
+
+    public Color getPathColorAsColor() { // Cast the String code of the path cell to Color Object
+        return Color.decode(pathCellColor);
+    }
+
+    public Color getGridColorAsAColor() {
+        return Color.decode(gridColor);
+    }
+
+    public boolean isDrawGrid() {
+        return drawGrid;
+    }
 }
 
