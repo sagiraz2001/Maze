@@ -26,7 +26,7 @@ public class MazePanel extends JPanel {
     protected void paintComponent(Graphics graphics) {
         super.paintComponent(graphics); // Clears the screen before drawing the new frame.
 
-        // If the image is not Null - draw every cell of the maze according to the two-dim maze array values, and draw a grid if needed.
+        // If the image is not Null - draw every cell of the maze according to the two-dim maze array values.
         if (this.maze != null) {
             int cellSize = 20;
             int height = this.maze.length;
@@ -39,7 +39,7 @@ public class MazePanel extends JPanel {
                         graphics.setColor(Color.WHITE);
                     }
                     graphics.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
-
+                    // Draw a grid if needed.
                     if (mazeConfigManager.isDrawGrid()) {
                         graphics.setColor(mazeConfigManager.getGridColorAsAColor());
                         graphics.drawRect(j * cellSize, i * cellSize, cellSize, cellSize);
@@ -47,5 +47,9 @@ public class MazePanel extends JPanel {
                 }
             }
         }
+    }
+
+    public boolean[][] getMaze() {
+        return maze;
     }
 }
