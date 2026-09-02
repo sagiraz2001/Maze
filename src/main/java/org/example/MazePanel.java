@@ -12,23 +12,16 @@ public class MazePanel extends JPanel {
         this.mazeConfigManager = mazeConfigManager;
     }
 
-    /**
-     * Updates a new maze structure.
-     * Stores the 2D array representation of the maze and triggers a screen repaint
-     * so the new maze is drawn immediately.
-     */
-    public void setMaze(boolean[][] newMaze) {
-        this.maze = newMaze;
-        this.repaint();// Screen refreshing, this automatically triggers paintComponent()
-        this.repaint();
-    }
-
     protected void paintComponent(Graphics graphics) {
         super.paintComponent(graphics); // Clears the screen before drawing the new frame.
 
         // If the image is not Null - draw every cell of the maze according to the two-dim maze array values.
         if (this.maze != null) {
-            int cellSize = 20;
+            // Calculates the available height and width for a single cell in the panel, chooses the minimum of them, and sets it as cellSize
+            int cellHeight = this.getHeight() / this.maze.length;
+            int cellWidth = this.getWidth() / this.maze[0].length;
+            int cellSize = Math.min(cellWidth, cellHeight);
+
             int height = this.maze.length;
             int width = this.maze[0].length;
             for (int i = 0; i < height; i++) {
@@ -51,5 +44,15 @@ public class MazePanel extends JPanel {
 
     public boolean[][] getMaze() {
         return maze;
+    }
+
+    /**
+     * Updates a new maze structure.
+     * Stores the 2D array representation of the maze and triggers a screen repaint
+     * so the new maze is drawn immediately.
+     */
+    public void setMaze(boolean[][] newMaze) {
+        this.maze = newMaze;
+        this.repaint();// Screen refreshing, this automatically triggers paintComponent()
     }
 }

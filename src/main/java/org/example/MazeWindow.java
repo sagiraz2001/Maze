@@ -19,7 +19,7 @@ public class MazeWindow extends JFrame {
 
     public MazeWindow() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(800, 800);
+        this.setSize(1500, 1500);
         this.setResizable(false);
         this.setTitle("Maze");
         this.setLocationRelativeTo(null);
@@ -45,6 +45,7 @@ public class MazeWindow extends JFrame {
 
         // Create the drawing panel and put it in the center of the screen
         this.mazePanel = new MazePanel(this.mazeConfigManager);
+        this.mazeConfigManager.fetchConfigFromServer(); // adding a colors for start
         this.add(mazePanel, BorderLayout.CENTER);
 
         this.getMazeButton.addActionListener(event -> {
@@ -87,7 +88,7 @@ public class MazeWindow extends JFrame {
         int height = getValidMazeSize(this.mazeHeight.getText());
         BufferedImage mazeImage = null;
         try {// Trying to load maze image and throw exception if encounter with an error
-            String urlString = "https://backend-qcf9.onrender.com/fm1/get-maze-image?width=" + width + "&height=" + height;
+            String urlString = "https://shaitest-production-3066.up.railway.app/fm1/get-maze-image?width=" + width + "&height=" + height;
             URL url = new URL(urlString);
             mazeImage = ImageIO.read(url);
         } catch (NumberFormatException exception) {
@@ -103,10 +104,17 @@ public class MazeWindow extends JFrame {
 
         boolean[][] rawMap = new boolean[height][width];
         if (mazeImage != null) {
+            // Step calculation - calculating how many pixels each cell in the source maze contains
+            int stepX = mazeImage.getWidth() / width;
+            int stepY = mazeImage.getHeight() / height;
             for (int i = 0; i < height; i++) {// Check all image's pixel and determine if it's passage or wall, then, generate the maze
                 for (int j = 0; j < width; j++) {
-                    int pixelColor = mazeImage.getRGB(j, i);
+                    // Saving the color of the center pixel in each cell in the source maze to check whether it is white or another color
+                    int pixelX = (j * stepX) + (stepX / 2);
+                    int pixelY = (i * stepY) + (stepY / 2);
+                    int pixelColor = mazeImage.getRGB(pixelX, pixelY);
                     Color color = new Color(pixelColor);
+                    // If the center pixel is white - we place true, if is other color - we place false
                     if (color.getRed() + color.getGreen() + color.getBlue() < 255 * 3) {
                         rawMap[i][j] = false;
                     } else {
@@ -114,6 +122,8 @@ public class MazeWindow extends JFrame {
                     }
                 }
             }
+        } else { // If image was not loaded successfully, return from this function
+            return;
         }
         this.mazePanel.setMaze(rawMap);
     }
