@@ -19,7 +19,7 @@ public class MazeWindow extends JFrame {
 
     public MazeWindow() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(1500, 1500);
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setResizable(false);
         this.setTitle("Maze");
         this.setLocationRelativeTo(null);

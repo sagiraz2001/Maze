@@ -18,6 +18,7 @@ public class MazePanel extends JPanel {
         // If the image is not Null - draw every cell of the maze according to the two-dim maze array values.
         if (this.maze != null) {
             // Calculates the available height and width for a single cell in the panel, chooses the minimum of them, and sets it as cellSize
+            // In order to display the maze in dynamic way
             int cellHeight = this.getHeight() / this.maze.length;
             int cellWidth = this.getWidth() / this.maze[0].length;
             int cellSize = Math.min(cellWidth, cellHeight);
