@@ -2,10 +2,13 @@ package org.example;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MazePanel extends JPanel {
     private MazeConfigManager mazeConfigManager;
     private boolean[][] maze;
+    private List<Point> solutionPath = new ArrayList<>();
 
 
     public MazePanel(MazeConfigManager mazeConfigManager) {
@@ -40,6 +43,11 @@ public class MazePanel extends JPanel {
                     }
                 }
             }
+            // Draw the path if there is a solution
+            graphics.setColor(this.mazeConfigManager.getPathColorAsColor());
+            for (Point point : this.solutionPath) {
+                graphics.fillRect(point.x * cellSize, point.y * cellSize, cellSize, cellSize);
+            }
         }
     }
 
@@ -51,9 +59,22 @@ public class MazePanel extends JPanel {
      * Updates a new maze structure.
      * Stores the 2D array representation of the maze and triggers a screen repaint
      * so the new maze is drawn immediately.
+     * clear the old solution path list
      */
     public void setMaze(boolean[][] newMaze) {
         this.maze = newMaze;
+        this.solutionPath.clear();
         this.repaint();// Screen refreshing, this automatically triggers paintComponent()
+    }
+
+    // Add point to the solution path and repaint to draw the point
+    public void addPointToPath(Point point) {
+        this.solutionPath.add(point);
+        this.repaint();
+    }
+
+    public void clearPath(){
+        this.solutionPath.clear();
+        this.repaint();
     }
 }

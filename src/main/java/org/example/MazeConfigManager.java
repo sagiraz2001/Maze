@@ -60,5 +60,9 @@ public class MazeConfigManager {
     public boolean isDrawGrid() {
         return drawGrid;
     }
+
+    public int getAnimationDelayMS() {
+        return this.animationDelayMS;
+    }
 }
 
