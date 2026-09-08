@@ -73,7 +73,7 @@ public class MazePanel extends JPanel {
         this.repaint();
     }
 
-    public void clearPath(){
+    public void clearPath() {
         this.solutionPath.clear();
         this.repaint();
     }
