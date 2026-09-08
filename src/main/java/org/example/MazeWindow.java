@@ -18,6 +18,7 @@ public class MazeWindow extends JFrame {
     private JButton refreshConfigButton;
     private JButton checkSolutionButton;
     private MazePanel mazePanel;
+    private JLabel fullConfigLabel;
 
     public MazeWindow() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -33,6 +34,7 @@ public class MazeWindow extends JFrame {
         this.getMazeButton = new JButton("GET MAZE");
         this.refreshConfigButton = new JButton("Refresh config");
         this.checkSolutionButton = new JButton("Check solution");
+        this.fullConfigLabel = new JLabel("Loading config...");
 
         // Create a top panel for the controls and add it to the window
         JPanel controlPanel = new JPanel();
@@ -43,11 +45,13 @@ public class MazeWindow extends JFrame {
         controlPanel.add(this.getMazeButton);
         controlPanel.add(this.refreshConfigButton);
         controlPanel.add(this.checkSolutionButton);
+        controlPanel.add(this.fullConfigLabel);
         this.add(controlPanel, BorderLayout.NORTH);
 
         // Create the drawing panel and put it in the center of the screen
         this.mazePanel = new MazePanel(this.mazeConfigManager);
         this.mazeConfigManager.fetchConfigFromServer(); // adding a colors for start
+        this.updateConfigDisplay(); //Update draw configuration for display for the user
         this.add(mazePanel, BorderLayout.CENTER);
 
         this.getMazeButton.addActionListener(event -> {
@@ -62,6 +66,7 @@ public class MazeWindow extends JFrame {
         this.checkSolutionButton.addActionListener(event -> {
             checkSolution();
         });
+
 
         this.setVisible(true);
     }
@@ -134,6 +139,7 @@ public class MazeWindow extends JFrame {
     public void refreshConfig() {
         this.mazePanel.clearPath();
         this.mazeConfigManager.fetchConfigFromServer();
+        this.updateConfigDisplay(); //Update draw configuration for display for the user
         this.repaint();
     }
 
@@ -248,6 +254,25 @@ public class MazeWindow extends JFrame {
             animateSolutionPath(solutionPath);
         });
         thread.start();
+    }
+
+    private void updateConfigDisplay() { // Update the maze configuration
+        String gridInfo;
+        if (this.mazeConfigManager.isDrawGrid()) {
+            gridInfo = "ON (" + this.mazeConfigManager.getGridColorText() + ")";
+        } else {
+            gridInfo = "OFF";
+        }
+
+        String configText = String.format(
+                "Config -> Delay: %dms | Grid: %s | Wall Color: %s | Path Color: %s",
+                this.mazeConfigManager.getAnimationDelayMS(),
+                gridInfo,
+                this.mazeConfigManager.getWallCellColorText(),
+                this.mazeConfigManager.getPathCellColorText()
+        );
+
+        this.fullConfigLabel.setText(configText);
     }
 }
 

@@ -53,7 +53,7 @@ public class MazeConfigManager {
         return Color.decode(pathCellColor);
     }
 
-    public Color getGridColorAsAColor() {
+    public Color getGridColorAsAColor() { // Cast the String code of the Grid cell to Color Object
         return Color.decode(gridColor);
     }
 
@@ -63,6 +63,18 @@ public class MazeConfigManager {
 
     public int getAnimationDelayMS() {
         return this.animationDelayMS;
+    }
+
+    public String getWallCellColorText() {
+        return this.wallCellColor;
+    }
+
+    public String getPathCellColorText() {
+        return this.pathCellColor;
+    }
+
+    public String getGridColorText() {
+        return this.gridColor;
     }
 }
 
